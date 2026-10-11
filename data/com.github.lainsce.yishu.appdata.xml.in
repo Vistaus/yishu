@@ -10,6 +10,7 @@
         <ul>
             <li>Quit anytime with the shortcut Ctrl + Q</li>
             <li>Easily shareable with other Todo.txt clients on other platforms</li>
+            <li>Searches can be saved, one at a time. No need for more.</li>
         </ul>
     </description>
     <provides>
@@ -53,7 +54,51 @@
         </screenshot>
     </screenshots>
     <releases>
-        <release version="1.1.2" date="2019-07-30">
+        <release version="2.0.0" date="2020-?-?">
+            <description>
+                <p>Release: Hello, Odin!</p>
+                <ul>
+                    <li>Changed: Major UI changes</li>
+                </ul>
+            </description>
+        </release>
+        <release version="1.2.5" date="2020-06-06">
+            <description>
+                <p>Release: Location Known</p>
+                <ul>
+                    <li>Fixed: Default or Custom location being reset (Darshak Parikh - @dar5hak)</li>
+                    <li>Added: Turkish and Polish translations</li>
+                </ul>
+            </description>
+        </release>
+        <release version="1.2.3" date="2020-05-08">
+            <description>
+                <p>Release: Location Known</p>
+                <ul>
+                    <li>Fixed: Default or Custom location being reset (Darshak Parikh - @dar5hak)</li>
+                    <li>Added: Turkish and Polish translations</li>
+                </ul>
+            </description>
+        </release>
+        <release version="1.2.2" date="2020-01-31">
+            <description>
+                <p>Release: Save Those Tasks Well</p>
+                <ul>
+                    <li>Added: Preferences to save search</li>
+                    <li>Small backend fixes</li>
+                </ul>
+            </description>
+        </release>
+        <release version="1.2.1" date="2020-01-24">
+            <description>
+                <p>Release: Wow Factor</p>
+                <ul>
+                    <li>Added: Add Task button as a Floating Action Button</li>
+                    <li>Small design fixes</li>
+                </ul>
+            </description>
+        </release>
+        <release version="1.2.0" date="2019-07-30">
             <description>
                 <p>Release: Redesign and Fixes</p>
                 <ul>

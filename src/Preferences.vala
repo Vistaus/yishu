@@ -22,21 +22,25 @@ namespace Yishu.Widgets {
 
         public Preferences (Gtk.Window? parent) {
             Object (
-            border_width: 6,
-            deletable: false,
-            resizable: false,
-            title: _("Preferences"),
-            transient_for: parent,
-            destroy_with_parent: true,
-            window_position: Gtk.WindowPosition.CENTER_ON_PARENT
+                border_width: 6,
+                deletable: false,
+                resizable: false,
+                title: _("Preferences"),
+                transient_for: parent,
+                destroy_with_parent: true,
+                window_position: Gtk.WindowPosition.CENTER_ON_PARENT
             );
         }
 
         construct {
             var settings = AppSettings.get_default ();
 
-            var header = new Granite.HeaderLabel (_("Todo.txt Preferences"));
-            var label = new SettingsLabel (_("Default Location:"));
+            var header = new Granite.HeaderLabel (_("Interface"));
+            var label = new SettingsLabel (_("Save searches:"));
+            var switch_b = new SettingsSwitch ("save-search");
+
+            var header2 = new Granite.HeaderLabel (_("Todo.txt Preferences"));
+            var label2 = new SettingsLabel (_("Default Location:"));
             list_place = new Gtk.ComboBoxText();
             list_place.hexpand = true;
             list_place.append_text(_("Home Folder"));
@@ -51,7 +55,6 @@ namespace Yishu.Widgets {
             string nc = homedir + "/Nextcloud/todo.txt";
             string oc = homedir + "/ownCloud/todo.txt";
             string other = homedir + "/bin/todo.txt/todo.txt";
-            settings.todo_txt_file_path = home;
             string file_used = settings.todo_txt_file_path;
 
             if (file_used == home) {
@@ -69,6 +72,12 @@ namespace Yishu.Widgets {
             } else if (file_used == other) {
                 list_place.set_active(4);
                 debug ("Set as Other");
+            } else {
+                settings.custom_file_enable = true;
+                list_place.set_active(0);
+                list_place.sensitive = false;
+                label2.sensitive = false;
+                debug ("Set as custom");
             }
 
             list_place.changed.connect (() => {
@@ -105,7 +114,7 @@ namespace Yishu.Widgets {
             var chooser = new Gtk.FileChooserButton (_("Open your file"), Gtk.FileChooserAction.OPEN);
             chooser.hexpand = true;
 
-            var custom_help = new Gtk.Image.from_icon_name ("help-info-symbolic", Gtk.IconSize.BUTTON);
+            var custom_help = new Gtk.Image.from_icon_name ("dialog-information-symbolic", Gtk.IconSize.BUTTON);
             custom_help.halign = Gtk.Align.START;
             custom_help.hexpand = true;
             custom_help.tooltip_text = _("Enabling custom locations will have you save your file\nin other places not recognized by other clients.");
@@ -119,22 +128,46 @@ namespace Yishu.Widgets {
                 settings.todo_txt_file_path = uri;
             });
 
+            if (settings.custom_file_enable == true) {
+                    chooser.sensitive = true;
+                    switch_c.active = true;
+                    list_place.sensitive = false;
+                    label2.sensitive = false;
+            } else {
+                    chooser.sensitive = false;
+                    switch_c.active = false;
+                    list_place.sensitive = true;
+                    label2.sensitive = true;
+                    list_place.set_active(0);
+                    settings.todo_txt_file_path = home;
+            }
+
             switch_c.notify["active"].connect (() => {
                 if (settings.custom_file_enable == true) {
                     chooser.sensitive = true;
                     switch_c.active = true;
+                    list_place.sensitive = false;
+                    label2.sensitive = false;
                 } else {
                     chooser.sensitive = false;
                     switch_c.active = false;
+                    list_place.sensitive = true;
+                    label2.sensitive = true;
+                    list_place.set_active(0);
+                    settings.todo_txt_file_path = home;
                 }
             });
 
             if (settings.custom_file_enable == true) {
                 chooser.sensitive = true;
                 switch_c.active = true;
+                list_place.sensitive = false;
+                label2.sensitive = false;
             } else {
                 chooser.sensitive = false;
                 switch_c.active = false;
+                list_place.sensitive = true;
+                label2.sensitive = true;
             }
 
             var hbox = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
@@ -147,10 +180,13 @@ namespace Yishu.Widgets {
             main_grid.column_spacing = 12;
             main_grid.attach (header, 0, 1, 1, 1);
             main_grid.attach (label, 0, 2, 1, 1);
-            main_grid.attach (list_place, 1, 2, 3, 1);
-            main_grid.attach (label_c, 0, 3, 1, 1);
-            main_grid.attach (hbox, 1, 3, 3, 1);
-            main_grid.attach (custom_help, 4, 3, 1, 1);
+            main_grid.attach (switch_b, 1, 2, 1, 1);
+            main_grid.attach (header2, 0, 3, 1, 1);
+            main_grid.attach (label2, 0, 4, 1, 1);
+            main_grid.attach (list_place, 1, 4, 3, 1);
+            main_grid.attach (label_c, 0, 5, 1, 1);
+            main_grid.attach (hbox, 1, 5, 3, 1);
+            main_grid.attach (custom_help, 4, 5, 1, 1);
 
             var content = this.get_content_area () as Gtk.Box;
             content.margin = 6;
